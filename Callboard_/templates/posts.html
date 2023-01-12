@@ -1,12 +1,33 @@
-{% extend 'flatpages/default.html' %}
+{% extends 'flatpages/default.html' %}
 
 {% block title %}
-
+Posts
 {% endblock title %}
 
 {% block content %}
-
-
+    <h1>Posts</h1>
+        <table>
+            {% if posts %}
+            <tr>
+                <td>Заголовок</td>
+                <td>Контент</td>
+                <td>Категория</td>
+                <td>Дата публикации</td>
+            </tr>
+            {% endif %}
+            {% for post in posts %}
+                <tr>
+                    <td>
+                        <button><a href="{{post.id}}">{{post.header}}</a></button>
+                    </td>
+                    <td>{{post.content|truncatechars:20}}</td>
+                    <td>{{post.category.category_name}}</td>
+                    <td>{{time_now|date:'M d Y'}}</td>
+                </tr>
+            {% empty %}
+                <h2>Постов нет!</h2>
+            {% endfor %}
+        </table>
 {% endblock content %}
 
 

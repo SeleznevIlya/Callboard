@@ -1,0 +1,25 @@
+{% extends 'flatpages/default.html' %}
+
+
+{% block title %}
+Post
+{% endblock title %}
+
+
+{% block content %}
+<table>
+            <tr>
+                <td>Заголовок</td>
+                <td>Текст</td>
+                <td>Дата</td>
+            </tr>
+
+            <tr>
+                <td>{{post.header}}</td>
+                <td>{{post.content}}</td>
+                <td>{{post.datetime|date:'d M Y'}}</td>
+            </tr>
+</table>
+
+<button><a href="/">Вернуться на главную страницу</a></button>
+{% endblock content %}
