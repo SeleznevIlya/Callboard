@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 from datetime import datetime
 from .forms import PostForm
@@ -34,9 +35,13 @@ class PostCreate(CreateView):
         return super().form_valid(form)
 
 
-class PostEdit(UpdateView):
-    ...
+class PostUpdate(UpdateView):
+    model = Post
+    form_class = PostForm
+    template_name = 'post_update.html'
 
 
 class PostDelete(DeleteView):
-    ...
+    model = Post
+    template_name = 'post_delete.html'
+    success_url = reverse_lazy('post_list')
