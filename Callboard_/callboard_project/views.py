@@ -28,6 +28,11 @@ class PostCreate(CreateView):
     form_class = PostForm
     template_name = 'post_create.html'
 
+    def form_valid(self, form):
+        author_of_post = form.save(commit=False)
+        author_of_post.author = self.request.user
+        return super().form_valid(form)
+
 
 class PostEdit(UpdateView):
     ...
