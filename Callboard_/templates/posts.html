@@ -6,7 +6,12 @@ Posts
 
 {% block content %}
     <h1>Posts</h1>
+    {% if request.user.is_authenticated %}
     <button><a href="/create/">Создать пост</a></button>
+    {% else %}
+    <button><a href="/accounts/login">Вход/Регистрация</a></button>
+    {% endif %}
+
         <table>
             {% if posts %}
             <tr>
@@ -29,6 +34,11 @@ Posts
                 <h2>Постов нет!</h2>
             {% endfor %}
         </table>
+
+{% if request.user.is_authenticated %}
+    <button><a href="/accounts/logout/">Выйти</a></button>
+{% endif %}
+
 {% endblock content %}
 
 

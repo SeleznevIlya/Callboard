@@ -46,7 +46,12 @@ INSTALLED_APPS = [
 
     'callboard_project',
     'ckeditor',
-    'ckeditor_uploader'
+    'ckeditor_uploader',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
 
 SITE_ID = 1
@@ -80,6 +85,11 @@ TEMPLATES = [
             ],
         },
     },
+]
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 WSGI_APPLICATION = 'Callboard_.wsgi.application'
@@ -143,7 +153,22 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = 'media/'
 
 
+LOGIN_URL = "/accounts/login"
+LOGIN_REDIRECT_URL = "/"
 
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = os.getenv('EMAIL_GOOGLE')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_GOOGLE_PASSWORD')
+EMAIL_USE_SSL = True
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 

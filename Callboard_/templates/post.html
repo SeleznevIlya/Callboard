@@ -20,7 +20,12 @@ Post
                 <td>{{post.datetime|date:'d M Y'}}</td>
             </tr>
 </table>
+
+
+{% if request.user.is_authenticated %}
+<!--author_of_post == username-->
 <button><a href="{{post.id}}/delete">Удалить пост</a></button>
-<button><a href="{{post.id}}/update/">Редактировать пост</a></button>
+<button><a href="{{post.id}}/update">Редактировать пост</a></button>
+{% endif %}
 <button><a href="/">Вернуться на главную страницу</a></button>
 {% endblock content %}
