@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 from datetime import datetime
-from .forms import PostForm
+from .forms import PostForm, BaseRegisterForm
 from .models import Post
 
 
@@ -58,3 +58,9 @@ class PostDelete(LoginRequiredMixin, DeleteView):
     model = Post
     template_name = 'post_delete.html'
     success_url = reverse_lazy('post_list')
+    
+    
+class BaseRegisterView(CreateView):
+    model = User
+    form_class = BaseRegisterForm
+    success_url = '/'

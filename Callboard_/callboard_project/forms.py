@@ -1,3 +1,6 @@
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+
 from .models import Post, Category
 from django import forms
 from django.core.exceptions import ValidationError
@@ -28,3 +31,30 @@ class PostForm(forms.ModelForm):
                 "content": "Error: пустой текст"
             })
         return cleaned_data
+
+
+class BaseRegisterForm(UserCreationForm):
+    email = forms.EmailField(label = "Email")
+    first_name = forms.CharField(label = "Имя")
+    last_name = forms.CharField(label = "Фамилия")
+
+    class Meta:
+        model = User
+        fields = ("username",
+                  "first_name",
+                  "last_name",
+                  "email",
+                  "password1",
+                  "password2", )
+
+    def clean(self):
+        cleaned_date = super().clean()
+        email = cleaned_date.get('email')
+        email_queryset = User.objects.values('email')
+        email_list = [email_user['email'] for email_user in email_queryset]
+
+        if email in email_list:
+            raise ValidationError({
+                "email": "Error: email already exist"
+            })
+        return cleaned_date
