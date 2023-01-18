@@ -1,11 +1,15 @@
+import os
+import random
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
-from django.shortcuts import render
+from django.core.mail import send_mail
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 from datetime import datetime
-from .forms import PostForm, BaseRegisterForm
-from .models import Post
+from .forms import PostForm, BaseRegisterForm, MyActivationCodeForm
+from .models import Post, VerifiedUser
 
 
 class PostList(ListView):
@@ -37,9 +41,7 @@ class PostCreate(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-# def get_username_profile(request):
-#     #return render_to_response('templates/post.html', {'username': request.user.username})
-#     return render(request, 'templates/post.html', {'username': request.user.username})
+
 
 
 class PostUpdate(LoginRequiredMixin, UpdateView):
@@ -63,4 +65,80 @@ class PostDelete(LoginRequiredMixin, DeleteView):
 class BaseRegisterView(CreateView):
     model = User
     form_class = BaseRegisterForm
-    success_url = '/'
+    success_url = 'confirmation/'
+
+
+def generate_code():
+    random.seed()
+    return str(random.randint(10000,99999))
+
+
+def register(request):
+    if not request.user.is_authenticated:
+        if request.POST:
+            form = BaseRegisterForm(request.POST or None)
+            if form.is_valid():
+                form.save()
+                username = form.cleaned_data.get('username')
+                email = form.cleaned_data.get('email')
+                print(username, email)
+                my_password1 = form.cleaned_data.get('password1')
+                u_f = User.objects.get(username=username, email=email, is_active=False)
+                code = generate_code()
+                if VerifiedUser.objects.filter(code=code):
+                    code = generate_code()
+                message = code
+                user = authenticate(username=username, password=my_password1)
+
+                VerifiedUser.objects.create(user=u_f, code=code)
+
+                send_mail(subject='код подтверждения',
+                          message=message,
+                          from_email=os.getenv('EMAIL_GOOGLE_FULL'),
+                          recipient_list = [email],
+                          fail_silently=False)
+                if user and user.is_active:
+                    login(request, user)
+                    return redirect('/')
+                else: #тут добавить редирект на страницу с формой для ввода кода.
+                    form.add_error(None, 'Аккаунт не активирован')
+                    return redirect('confirmation/')
+                    # return render(request, 'registration/register.html', {'form': form})
+
+            else:
+                return render(request, 'sign/signup.html', {'form': form})
+        else:
+            return render(request, 'sign/signup.html', {'form': BaseRegisterForm()})
+    else:
+        return redirect('/')
+
+
+def endreg(request):
+    if request.user.is_authenticated:
+        return redirect('/')
+    else:
+        if request.method == 'POST':
+            form = MyActivationCodeForm(request.POST)
+            if form.is_valid():
+                code_use = form.cleaned_data.get("code")
+                if VerifiedUser.objects.filter(code=code_use):
+                    verified_user = VerifiedUser.objects.get(code=code_use)
+                else:
+                    form.add_error(None, "Код подтверждения не совпадает.")
+                    return render(request, 'sign/otp_comfirmation.html', {'form': form})
+                if verified_user.user.is_active == False:
+                    verified_user.user.is_active = True
+                    verified_user.user.save()
+                    # user = authenticate(username=profile.user.username, password=profile.user.password)
+                    login(request, verified_user.user)
+                    verified_user.delete()
+                    return redirect('/')
+                else:
+                    form.add_error(None, '1Unknown or disabled account')
+                    return render(request, 'sign/otp_comfirmation.html', {'form': form})
+            else:
+                return render(request, 'sign/otp_comfirmation.html', {'form': form})
+        else:
+            form = MyActivationCodeForm()
+            return render(request, 'sign/otp_comfirmation.html', {'form': form})
+

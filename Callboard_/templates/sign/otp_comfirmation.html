@@ -5,7 +5,7 @@
 <div class="container">
 <h1 class="text-center">Регистрация</h1>
     <div class="col-lg-6 col-lg-offset-3">
-        <form method="post" action="{% url 'register' %}">
+        <form method="post" action="{% url 'endreg' %}">
             {% csrf_token %}
             {% for field in form %}
             <p>
@@ -20,7 +20,7 @@
 
             </p>
             {% endfor %}
-            <button type="submit" class="btn btn-success">Зарегистрироваться</button>
+            <button type="submit" class="btn btn-success">Подтвердить регистрацию</button>
         </form>
     </div>
 </div>

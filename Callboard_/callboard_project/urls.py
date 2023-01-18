@@ -1,6 +1,6 @@
 from django.urls import path, include
 
-from .views import PostList, PostDetail, PostCreate, PostUpdate, PostDelete, BaseRegisterView
+from .views import PostList, PostDetail, PostCreate, PostUpdate, PostDelete, BaseRegisterView, register, endreg
 from django.contrib.auth.views import LoginView, LogoutView
 
 urlpatterns = [
@@ -16,8 +16,15 @@ urlpatterns = [
          LogoutView.as_view(template_name = 'sign/logout.html'),
          name='logout'),
     path('signup/',
-         BaseRegisterView.as_view(template_name = 'sign/signup.html'),
-         name='signup'),
+         register, name='register'),
+    path('signup/confirmation/',
+         endreg, name='endreg')
+    # path('signup/',
+    #      BaseRegisterView.as_view(template_name = 'sign/signup.html'),
+    #      name='signup'),
+    # path('signup/confirmation/',
+    #      email_confirmation,
+    #      name='otp'),
 ]
 
 

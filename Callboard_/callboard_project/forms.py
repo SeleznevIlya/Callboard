@@ -34,9 +34,9 @@ class PostForm(forms.ModelForm):
 
 
 class BaseRegisterForm(UserCreationForm):
-    email = forms.EmailField(label = "Email")
-    first_name = forms.CharField(label = "Имя")
-    last_name = forms.CharField(label = "Фамилия")
+    email = forms.EmailField(label="Email")
+    first_name = forms.CharField(label="Имя")
+    last_name = forms.CharField(label="Фамилия")
 
     class Meta:
         model = User
@@ -58,3 +58,29 @@ class BaseRegisterForm(UserCreationForm):
                 "email": "Error: email already exist"
             })
         return cleaned_date
+
+
+class MyActivationCodeForm(forms.Form):
+    error_css_class = 'has-error'
+    error_messages = {'password_incorrect':
+                          ("Старый пароль не верный. Попробуйте еще раз."),
+                      'password_mismatch':
+                          ("Пароли не совпадают."),
+                      'cod-no':
+                          ("Код не совпадает."),}
+
+
+    def __init__(self, *args, **kwargs):
+        super(MyActivationCodeForm, self).__init__(*args, **kwargs)
+
+    code = forms.CharField(required=True, max_length=50, label='Код подтвержения', widget=forms.PasswordInput(attrs={'class': 'form-control'}),  error_messages={'required': 'Введите код!','max_length': 'Максимальное количество символов 50'})
+
+
+
+    def save(self, commit=True):
+        profile = super(MyActivationCodeForm, self).save(commit=False)
+        profile.code = self.cleaned_data['code']
+
+        if commit:
+            profile.save()
+        return profile
