@@ -9,7 +9,7 @@ Posts
     {% if request.user.is_authenticated %}
     <button><a href="/create/">Создать пост</a></button>
     {% else %}
-    <button><a href="/accounts/login">Вход/Регистрация</a></button>
+    <button><a href="/login">Вход/Регистрация</a></button>
     {% endif %}
 
         <table>
@@ -36,7 +36,7 @@ Posts
         </table>
 
 {% if request.user.is_authenticated %}
-    <button><a href="/accounts/logout/">Выйти</a></button>
+    <button><a href="/logout">Выйти</a></button>
 {% endif %}
 
 {% endblock content %}

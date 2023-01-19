@@ -5,6 +5,11 @@ from ckeditor_uploader.fields import RichTextUploadingField
 from django.urls import reverse
 
 
+class VerifiedUser(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    code = models.CharField(max_length=50,blank=True, null=True, default=None)
+
+
 class Category(models.Model):
     category_name = models.CharField(max_length=255, unique=True)
     subscriber = models.ManyToManyField(User, through='Subscribers')
