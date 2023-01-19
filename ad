@@ -1,0 +1,59 @@
+[33mcommit c8a2905f9ef188b2faecefd29e65ddaa4a72eb3c[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m
+Author: Helfik <helfik123_1998@mail.ru>
+Date:   Mon Jan 16 17:47:00 2023 +0300
+
+    requirements.txt
+
+[33mcommit d6a4a203e14037bc9412ec68c4d00bd82653d550[m
+Author: Helfik <helfik123_1998@mail.ru>
+Date:   Sun Jan 15 23:47:56 2023 +0300
+
+    Добавил аутентификацию и регистрацию пользователей
+
+[33mcommit f54ad2e355741f8e1e2a9614f7716949f5c5558b[m
+Author: Helfik <helfik123_1998@mail.ru>
+Date:   Fri Jan 13 22:17:42 2023 +0300
+
+    Доработал страницу создания постов, добавил страницы редактирования и удаления
+
+[33mcommit c3f08e4a114d29a3313062bd2310020fe31e3fc5[m
+Author: Helfik <helfik123_1998@mail.ru>
+Date:   Fri Jan 13 21:49:38 2023 +0300
+
+    Доработал страницу создания поста(после сохранения редирект на созданную страницу поста, в бд в столбец автора записывается авторизованный пользователь)
+
+[33mcommit b1df3c29ddf6a86c1ee4f5920cdb269ceebae8c3[m
+Author: Helfik <helfik123_1998@mail.ru>
+Date:   Thu Jan 12 22:10:48 2023 +0300
+
+    Create main page, <int:pk>page, create page
+
+[33mcommit 2544a7e9ef04818dbc6d9a02b20127b7b8b030c5[m
+Author: Helfik <helfik123_1998@mail.ru>
+Date:   Wed Jan 11 22:04:26 2023 +0300
+
+    Прикрутил бустрап, начинаю создавать страницы и вьюхи
+
+[33mcommit 202454a892b73a7abd93dde2d8f87c70e198ff1d[m
+Author: Helfik <helfik123_1998@mail.ru>
+Date:   Tue Jan 10 22:45:07 2023 +0300
+
+    Начал прикручивать ckeditor. Далее шаблоны и вьюшки
+
+[33mcommit f1633e36aad937abad939e79bcdc558274642c5c[m
+Author: Helfik <helfik123_1998@mail.ru>
+Date:   Tue Jan 10 21:48:19 2023 +0300
+
+    Create models with fields
+
+[33mcommit 19435d6756889a82c3cf345e458569ce1de73f98[m
+Author: Helfik <helfik123_1998@mail.ru>
+Date:   Sun Jan 8 21:08:01 2023 +0300
+
+    delete .env
+
+[33mcommit 1bbea06fc09efcb8bb737b4274ab790ddb794f10[m
+Author: Helfik <helfik123_1998@mail.ru>
+Date:   Sun Jan 8 20:34:27 2023 +0300
+
+    First step in a new project:create django project and connect with postgresql db
