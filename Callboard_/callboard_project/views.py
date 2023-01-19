@@ -41,15 +41,6 @@ class PostCreate(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-
-<<<<<<< HEAD
-# def get_username_profile(request):
-#     #return render_to_response('templates/post.html', {'username': request.user.username})
-#     return render(request, 'templates/post.html', {'username': request.user.username})
-=======
->>>>>>> test2
-
-
 class PostUpdate(LoginRequiredMixin, UpdateView):
     model = Post
     form_class = PostForm
