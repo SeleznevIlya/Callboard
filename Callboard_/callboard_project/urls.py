@@ -19,14 +19,4 @@ urlpatterns = [
          register, name='register'),
     path('signup/confirmation/',
          endreg, name='endreg')
-    # path('signup/',
-    #      BaseRegisterView.as_view(template_name = 'sign/signup.html'),
-    #      name='signup'),
-    # path('signup/confirmation/',
-    #      email_confirmation,
-    #      name='otp'),
 ]
-
-
-
-

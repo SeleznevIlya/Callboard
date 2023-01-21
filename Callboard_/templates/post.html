@@ -24,8 +24,18 @@ Post
 
 {% if request.user.is_authenticated %}
 <!--author_of_post == username-->
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ comment_form }}
+            <input type="submit" value="Save">
+        </div>
+    </form>
 <button><a href="{{post.id}}/delete">Удалить пост</a></button>
 <button><a href="{{post.id}}/update">Редактировать пост</a></button>
+<button><a href="{{post.id}}/reply">Откликнуться</a></button>
+{% else %}
+<a class="btn btn-outline-info" href="{% url 'login' %}?next={{request.path}}">Log in to add a comment!</a><br>
 {% endif %}
 <button><a href="/">Вернуться на главную страницу</a></button>
 {% endblock content %}

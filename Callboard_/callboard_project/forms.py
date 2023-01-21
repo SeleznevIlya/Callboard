@@ -1,9 +1,19 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-from .models import Post, Category
+from .models import Post, Category, Reply
 from django import forms
 from django.core.exceptions import ValidationError
+
+
+class ReplyForm(forms.ModelForm):
+    content = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'form-control py-4',
+        'placeholder': 'Reply'}))
+
+    class Meta:
+        model = Reply
+        fields = ['content']
 
 
 class PostForm(forms.ModelForm):
@@ -69,13 +79,14 @@ class MyActivationCodeForm(forms.Form):
                       'cod-no':
                           ("Код не совпадает."),}
 
-
     def __init__(self, *args, **kwargs):
         super(MyActivationCodeForm, self).__init__(*args, **kwargs)
 
-    code = forms.CharField(required=True, max_length=50, label='Код подтвержения', widget=forms.PasswordInput(attrs={'class': 'form-control'}),  error_messages={'required': 'Введите код!','max_length': 'Максимальное количество символов 50'})
-
-
+    code = forms.CharField(required=True,
+                           max_length=50,
+                           label='Код подтвержения',
+                           widget=forms.PasswordInput(attrs={'class': 'form-control'}),
+                           error_messages={'required': 'Введите код!','max_length': 'Максимальное количество символов 50'})
 
     def save(self, commit=True):
         profile = super(MyActivationCodeForm, self).save(commit=False)

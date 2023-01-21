@@ -3,13 +3,15 @@ import random
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import send_mail
-from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 from datetime import datetime
-from .forms import PostForm, BaseRegisterForm, MyActivationCodeForm
-from .models import Post, VerifiedUser
+from .forms import PostForm, BaseRegisterForm, MyActivationCodeForm, ReplyForm
+from .models import Post, VerifiedUser, Reply
 
 
 class PostList(ListView):
@@ -28,6 +30,22 @@ class PostDetail(DetailView):
     model = Post
     template_name = 'post.html'
     context_object_name = 'post'
+    form_class = ReplyForm
+
+    def get_context_data(self, **kwargs):
+        data = super(PostDetail,self).get_context_data(**kwargs)
+        if self.request.user.is_authenticated:
+            data['comment_form'] = ReplyForm(instance=self.request.user)
+        return data
+
+    def post(self, request, *args, **kwargs):
+        new_reply = Reply(
+            content=request.POST.get('content'),
+            author=request.user,
+            post=self.get_object()
+        )
+        new_reply.save()
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
 class PostCreate(LoginRequiredMixin, CreateView):
