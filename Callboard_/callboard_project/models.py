@@ -29,7 +29,7 @@ class Post(models.Model):
     content = RichTextUploadingField()
     datetime = models.DateTimeField(auto_now_add=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    image = models.ImageField(blank=True, upload_to='images/')
+    image = models.ImageField(upload_to='images/', blank=True)
     video = EmbedVideoField(blank=True)
 
     def __str__(self):
