@@ -58,7 +58,7 @@ class PostDetail(DetailView):
 class ReplyList(LoginRequiredMixin, ListView):
     model = Reply
     template_name = 'reply_list.html'
-    #paginate_by = ...
+    paginate_by = 10
     ordering = 'id'
 
     def get_queryset(self):
@@ -70,6 +70,33 @@ class ReplyList(LoginRequiredMixin, ListView):
         data = super(ReplyList, self).get_context_data()
         data['post_replys'] = Post.objects.filter(author=self.request.user)
         return data
+
+
+class ReplyConfirmed(LoginRequiredMixin, CreateView):
+    model = Reply
+    template_name = 'reply_confirmed.html'
+    form_class = ReplyForm
+    context_object_name = 'confirmed'
+    success_url = '/'
+
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data()
+        reply_id = self.kwargs.get('pk')
+        Reply.objects.filter(pk=reply_id).update(confirmation=True)
+        data['message'] = 'This reply was confirmed'
+        send_mail(
+            subject='Reply comfirmed',
+            message=f'User {self.request.user} comfirmed your reply',
+            from_email=os.getenv('EMAIL_GOOGLE_FULL'),
+            recipient_list=[User.objects.filter(username=self.request.user).values('email')[0]['email']]
+        )
+        return data
+
+
+class ReplyUnconfirmed(LoginRequiredMixin, DeleteView):
+    model = Reply
+    template_name = 'reply_unconfirmed.html'
+    success_url = reverse_lazy('/')
 
 
 class PostCreate(LoginRequiredMixin, CreateView):
