@@ -8,6 +8,7 @@ Posts
     <h1>Posts</h1>
     {% if request.user.is_authenticated %}
     <button><a href="/create/">Создать пост</a></button>
+    <button><a href="/replys/">Отклики на ваши посты</a></button>
     {% else %}
     <button><a href="/login">Вход/Регистрация</a></button>
     {% endif %}

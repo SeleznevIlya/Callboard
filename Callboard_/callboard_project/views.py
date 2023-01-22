@@ -55,6 +55,23 @@ class PostDetail(DetailView):
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
+class ReplyList(LoginRequiredMixin, ListView):
+    model = Reply
+    template_name = 'reply_list.html'
+    #paginate_by = ...
+    ordering = 'id'
+
+    def get_queryset(self):
+        queryser = super(ReplyList, self).get_queryset()
+        post_id = self.kwargs.get('post_id')
+        return queryser.filter(post_id=post_id) if post_id else queryser.filter(author=self.request.user)
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        data = super(ReplyList, self).get_context_data()
+        data['post_replys'] = Post.objects.filter(author=self.request.user)
+        return data
+
+
 class PostCreate(LoginRequiredMixin, CreateView):
     model = Post
     form_class = PostForm

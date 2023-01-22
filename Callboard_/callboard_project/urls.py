@@ -1,6 +1,7 @@
 from django.urls import path, include
 
-from .views import PostList, PostDetail, PostCreate, PostUpdate, PostDelete, BaseRegisterView, register, endreg
+from .views import PostList, PostDetail, PostCreate, PostUpdate, PostDelete, BaseRegisterView, register, endreg, \
+    ReplyList
 from django.contrib.auth.views import LoginView, LogoutView
 
 urlpatterns = [
@@ -9,6 +10,8 @@ urlpatterns = [
     path('create/', PostCreate.as_view()),
     path('<int:pk>/update/', PostUpdate.as_view()),
     path('<int:pk>/delete/', PostDelete.as_view()),
+    path('replys/', ReplyList.as_view()),
+    path('replys/<int:pk>', ReplyList.as_view(), name='reply_post'),
     path('login/',
          LoginView.as_view(template_name = 'sign/login.html'),
          name='login'),

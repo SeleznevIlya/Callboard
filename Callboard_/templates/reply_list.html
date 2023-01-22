@@ -1,0 +1,61 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %}
+Posts
+{% endblock title %}
+
+{% block content %}
+<h2 class="my-4">All your posts</h2>
+    {% for post_reply in post_replys %}
+        <a href="{% url 'reply_post' post_reply.id %}" class="list-group-item">
+            {{ post_reply.header }}
+        </a>
+    {% endfor %}
+
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3">
+            <h2 class="my-4">Comments </h2>
+        </div>
+    </div>
+</div>
+
+<br>
+<div class="container">
+
+    {% for com in page_obj %}
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-lg-6">
+                <div class="list-group">
+                    <div class="card">
+
+                        <div class="card-header">
+                            {{com.author}}
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{com.datetime}}</h5>
+                            <p class="card-text">{{ com.content}}</p>
+                            {%if com.confirmation == True%}
+                            <a href="{% url 'comment_disapproved' com.id %}">Delete</a>
+                            {% else %}
+                            <a href="{% url 'comment_approved' com.id %}">Approved</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<hr>
+{% endfor %}
+
+{% if request.user.is_authenticated %}
+    <button><a href="/logout">Выйти</a></button>
+{% endif %}
+
+{% endblock content %}
