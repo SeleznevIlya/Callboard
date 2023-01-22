@@ -1,8 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.conf import settings
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.urls import reverse
+from embed_video.fields import EmbedVideoField
 
 
 class VerifiedUser(models.Model):
@@ -29,6 +29,8 @@ class Post(models.Model):
     content = RichTextUploadingField()
     datetime = models.DateTimeField(auto_now_add=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    image = models.ImageField(blank=True, upload_to='images/')
+    video = EmbedVideoField(blank=True)
 
     def __str__(self):
         return f'{self.header}'

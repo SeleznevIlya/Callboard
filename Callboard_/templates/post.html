@@ -1,5 +1,5 @@
 {% extends 'flatpages/default.html' %}
-
+{% load embed_video_tags %}
 
 {% block title %}
 Post
@@ -12,12 +12,24 @@ Post
                 <td>Заголовок</td>
                 <td>Текст</td>
                 <td>Дата</td>
+                {% if post.image %}
+                <td>Картинки</td>
+                {% endif %}
+                <td>Видео</td>
             </tr>
 
             <tr>
                 <td>{{post.header}}</td>
                 <td>{{post.content}}</td>
                 <td>{{post.datetime|date:'d M Y'}}</td>
+                {% if post.image %}
+                <td><img class="img-fluid rounded " src="{{ post.image.url }}" alt=""></td>
+                {% endif %}
+                <td>
+                    {% video post.video as my_video %}
+                    {% video my_video 'small' %}
+                    {% endvideo %}
+                </td>
             </tr>
 </table>
 

@@ -11,4 +11,4 @@ urlpatterns = [
     #path('sign/', include('sign.urls')),
     #path('accounts/', include('allauth.urls')),
     path('ckeditor', include('ckeditor_uploader.urls')),
-] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

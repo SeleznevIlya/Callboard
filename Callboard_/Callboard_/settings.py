@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.flatpages',
 
     'callboard_project',
+    'embed_video',
     'ckeditor',
     'ckeditor_uploader',
 
@@ -52,6 +53,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+
 ]
 
 SITE_ID = 1
@@ -150,7 +152,7 @@ STATIC_URL = 'static/'
 #STATIC_ROOT = 'static/'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = 'media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 LOGIN_URL = "/accounts/login"

@@ -1,6 +1,5 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-
 from .models import Post, Category, Reply
 from django import forms
 from django.core.exceptions import ValidationError
@@ -17,10 +16,16 @@ class ReplyForm(forms.ModelForm):
 
 
 class PostForm(forms.ModelForm):
+    video = forms.CharField(widget=forms.TextInput(attrs={
+            'class': 'form-control py-4',
+            'placeholder': 'Enter video link',
+
+        }), required=False)
+
     class Meta:
         model = Post
         fields = [
-            'header', 'category', 'content',
+            'header', 'category', 'content', 'image', 'video'
         ]
 
     def clean(self):
