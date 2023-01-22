@@ -1,10 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'flatpages/default.html' %}
 
-</body>
-</html>
+{% block content %}
+<hr>
+<h1>{{message}}</h1>
+<button><a href="/replys/">Вернуться на страницу откликов</a></button>
+{% endblock content %}

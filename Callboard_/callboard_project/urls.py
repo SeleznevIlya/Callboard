@@ -10,7 +10,7 @@ urlpatterns = [
     path('create/', PostCreate.as_view()),
     path('<int:pk>/update/', PostUpdate.as_view()),
     path('<int:pk>/delete/', PostDelete.as_view()),
-    path('replys/', ReplyList.as_view()),
+    path('replys/', ReplyList.as_view(), name='reply_list'),
     path('replys/<int:post_id>', ReplyList.as_view(), name='reply_post'),
     path('reply_confirmed/<int:pk>', ReplyConfirmed.as_view(), name='reply_confirmed'),
     path('reply_unconfirmed/<int:pk>', ReplyUnconfirmed.as_view(), name='reply_unconfirmed'),

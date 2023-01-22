@@ -36,6 +36,7 @@ class PostDetail(DetailView):
         data = super(PostDetail,self).get_context_data(**kwargs)
         if self.request.user.is_authenticated:
             data['comment_form'] = ReplyForm(instance=self.request.user)
+            data['author_of_post'] = Post.objects.filter(author=self.request.user)
         return data
 
     def post(self, request, *args, **kwargs):
@@ -77,7 +78,7 @@ class ReplyConfirmed(LoginRequiredMixin, CreateView):
     template_name = 'reply_confirmed.html'
     form_class = ReplyForm
     context_object_name = 'confirmed'
-    success_url = '/'
+    success_url = 'replys/'
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data()
@@ -96,7 +97,7 @@ class ReplyConfirmed(LoginRequiredMixin, CreateView):
 class ReplyUnconfirmed(LoginRequiredMixin, DeleteView):
     model = Reply
     template_name = 'reply_unconfirmed.html'
-    success_url = reverse_lazy('/')
+    success_url = reverse_lazy('reply_list')
 
 
 class PostCreate(LoginRequiredMixin, CreateView):
@@ -115,12 +116,6 @@ class PostUpdate(LoginRequiredMixin, UpdateView):
     form_class = PostForm
     template_name = 'post_update.html'
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['author_of_post'] = User.objects.get(pk=Post.objects.get(pk=self.request.path[-1]).author_id).username
-    #     print(context['author_of_post'])
-    #     return context
-
 
 class PostDelete(LoginRequiredMixin, DeleteView):
     model = Post
@@ -136,7 +131,7 @@ class BaseRegisterView(CreateView):
 
 def generate_code():
     random.seed()
-    return str(random.randint(10000,99999))
+    return str(random.randint(10000, 99999))
 
 
 def register(request):
@@ -166,11 +161,9 @@ def register(request):
                 if user and user.is_active:
                     login(request, user)
                     return redirect('/')
-                else: #тут добавить редирект на страницу с формой для ввода кода.
+                else:
                     form.add_error(None, 'Аккаунт не активирован')
                     return redirect('confirmation/')
-                    # return render(request, 'registration/register.html', {'form': form})
-
             else:
                 return render(request, 'sign/signup.html', {'form': form})
         else:
@@ -195,7 +188,6 @@ def endreg(request):
                 if verified_user.user.is_active == False:
                     verified_user.user.is_active = True
                     verified_user.user.save()
-                    # user = authenticate(username=profile.user.username, password=profile.user.password)
                     login(request, verified_user.user)
                     verified_user.delete()
                     return redirect('/')
