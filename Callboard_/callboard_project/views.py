@@ -45,6 +45,13 @@ class PostDetail(DetailView):
             post=self.get_object()
         )
         new_reply.save()
+        author_of_post = Post.objects.get(id=kwargs['pk']).author
+        send_mail(
+            subject='New Reply',
+            message='You have new reply',
+            from_email=os.getenv('EMAIL_GOOGLE_FULL'),
+            recipient_list=[author_of_post.email]
+        )
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
